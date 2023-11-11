@@ -23,9 +23,9 @@ export default function Home() {
 
       <Card className='w-[90vw] max-w-[400px]'>
         <CardHeader>
-          <CardTitle></CardTitle>
+          <CardTitle>Nexus-Canva</CardTitle>
           <CardDescription>
-            
+          Nexus-Canva
           </CardDescription>
         </CardHeader>
 
