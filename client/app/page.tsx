@@ -11,11 +11,16 @@ import { Separator } from '@/components/ui/Separator'
 import ThemeMenuButton from '@/components/ThemeMenuButton'
 import CreateRoomForm from '@/components/CreateRoomForm'
 import JoinRoomButtoon from '@/components/JoinRoomButton'
+import AuthenticationPage from '@/components/Login'
 
 export const dynamic = 'force-dynamic'
 
 export default function Home() {
   const roomId = nanoid()
+
+  const user = false;
+
+  if (!user) return <AuthenticationPage/>
 
   return (
     <div className='flex h-screen flex-col items-center justify-between pb-5 pt-[13vh]'>
