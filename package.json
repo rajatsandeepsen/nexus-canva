@@ -1,0 +1,18 @@
+{
+  "name": "nexus-canva",
+  "version": "1.0.0",
+  "description": "nexus-canva",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd server && pnpm dev\" \"cd client && pnpm dev\"",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "nexus",
+  "devDependencies": {
+    "@commitlint/cli": "^18.2.0",
+    "@commitlint/config-conventional": "^18.1.0",
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.3"
+  }
+}
