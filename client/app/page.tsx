@@ -20,7 +20,7 @@ export default function Home() {
 
   const user = false;
 
-  if (!user) return <AuthenticationPage/>
+  if (!user) return <AuthenticationPage />
 
   return (
     <div className='flex h-screen flex-col items-center justify-between pb-5 pt-[13vh]'>
@@ -30,7 +30,7 @@ export default function Home() {
         <CardHeader>
           <CardTitle>Nexus-Canva</CardTitle>
           <CardDescription>
-          Nexus-Canva
+            Nexus-Canva
           </CardDescription>
         </CardHeader>
 
