@@ -1,10 +1,12 @@
 import { PanelRightOpen } from 'lucide-react'
+import { MessagesSquare } from 'lucide-react'
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/Sheet'
 import { Button } from '@/components/ui/Button'
 import SaveButton from '@/components/SaveButton'
 import ThemeMenuButton from '@/components/ThemeMenuButton'
 import RightPanel from '@/components/RightPanel'
+import Sidebar from '@/components/Sidebar'
 
 export default function Header() {
   return (
@@ -22,15 +24,31 @@ export default function Header() {
               <Button
                 variant='outline'
                 size='icon'
-                className='flex h-9 lg:hidden'
+                className='flex h-9 '
+                aria-label='Open right panel'
+              >
+                <MessagesSquare size={20} />
+              </Button>
+            </SheetTrigger>
+
+            <SheetContent className='w-[28rem]'>
+              <RightPanel />
+            </SheetContent>
+          </Sheet>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant='outline'
+                size='icon'
+                className='flex h-9 '
                 aria-label='Open right panel'
               >
                 <PanelRightOpen size={20} />
               </Button>
             </SheetTrigger>
 
-            <SheetContent className='w-[17rem]'>
-              <RightPanel />
+            <SheetContent className='w-[18rem]'>
+              <Sidebar />
             </SheetContent>
           </Sheet>
         </div>
