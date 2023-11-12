@@ -130,7 +130,7 @@ export default function DrawingCanvas() {
         </div>
       )}
 
-      {isCanvasLoading && (
+       {isCanvasLoading && (
         <Skeleton className='absolute h-full w-full' />
       )}
 
