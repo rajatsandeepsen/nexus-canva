@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Check, Plus, Send } from "lucide-react"
 
@@ -92,6 +94,8 @@ export function CardsChat() {
   ])
   const [input, setInput] = React.useState("")
   const inputLength = input.trim().length
+
+
 
   return (
     <>
@@ -258,3 +262,5 @@ export function CardsChat() {
     </>
   )
 }
+
+export default CardsChat
