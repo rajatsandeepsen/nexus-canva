@@ -50,3 +50,10 @@ export function isMacOS() {
   if (typeof navigator === 'undefined') return false
   return navigator.userAgent?.includes('Mac')
 }
+
+export const findFallback = (name: string):string => {
+  let x = name.split(' ')
+  let y = ''
+  x.forEach((i)=> y += i[0])
+  return y
+}

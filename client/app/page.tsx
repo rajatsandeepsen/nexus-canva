@@ -21,13 +21,7 @@ import { Label } from '@/components/ui/Label'
 import { Session } from '@supabase/supabase-js'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useUserStore } from '@/stores/userStore'
-
-export const findFallback = (name: string):string => {
-  let x = name.split(' ')
-  let y = ''
-  x.forEach((i)=> y += i[0])
-  return y
-}
+import { findFallback } from '@/lib/utils'
 
 export default function Home() {
   const [session, setSession] = useState<Session | null>(null)
@@ -41,7 +35,7 @@ export default function Home() {
       }
     })
 
-  }, [])
+  }, [setUser])
 
   if (!user || !session) return <AuthenticationPage />
   const roomId = nanoid()

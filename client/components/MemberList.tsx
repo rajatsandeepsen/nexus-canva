@@ -9,13 +9,7 @@ import { useToast } from '@/components/ui/useToast'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/Card'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-
-export const findFallback = (name: string):string => {
-  let x = name.split(' ')
-  let y = ''
-  x.forEach((i)=> y += i[0])
-  return y
-}
+import { findFallback } from '@/lib/utils'
 
 export default function MemberList() {
   const { toast } = useToast()
