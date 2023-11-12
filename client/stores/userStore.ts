@@ -1,9 +1,7 @@
+import { UserMetadata } from '@supabase/supabase-js'
 import { create } from 'zustand'
 
-export interface User {
-  id: string
-  username: string
-}
+export interface User extends UserMetadata {}
 
 interface UserState {
   user: User | null

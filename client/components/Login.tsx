@@ -10,10 +10,13 @@ import * as React from "react"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   async function onSubmit(event: React.SyntheticEvent) {
@@ -24,6 +27,19 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       setIsLoading(false)
     }, 3000)
   }
+
+  const loginWithGithub = React.useCallback(async ()=> {
+    setIsLoading(true)
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+    })
+
+    if (error) {
+      console.error(error.message)
+    }
+
+  }, []) 
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -61,7 +77,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button onClick={loginWithGithub} variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (
           <></>
         ) : (

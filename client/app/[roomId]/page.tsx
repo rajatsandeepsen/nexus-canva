@@ -5,7 +5,6 @@ export default function RoomPage() {
   return (
     <>
       <DisconnectedDialog />
-
       <DrawingCanvas />
     </>
   )

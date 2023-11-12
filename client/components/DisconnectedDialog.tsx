@@ -15,15 +15,15 @@ import {
 const DisconnectedDialog = () => {
   const dialogTriggerRef = useRef<HTMLButtonElement>(null)
 
-  // useEffect(() => {
-  //   socket.on('disconnected', () => {
-  //     dialogTriggerRef.current?.click()
-  //   })
+  useEffect(() => {
+    socket.on('disconnected', () => {
+      dialogTriggerRef.current?.click()
+    })
 
-  //   return () => {
-  //     socket.off('disconnected')
-  //   }
-  // }, [])
+    return () => {
+      socket.off('disconnected')
+    }
+  }, [])
 
   return (
     <Dialog>

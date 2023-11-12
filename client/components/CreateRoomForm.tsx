@@ -27,11 +27,13 @@ import CopyButton from '@/components/CopyButton'
 
 interface CreateRoomFormProps {
   roomId: string
+  userId: string
+  
 }
 
 type CreatRoomForm = z.infer<typeof createRoomSchema>
 
-export default function CreateRoomForm({ roomId }: CreateRoomFormProps) {
+export default function CreateRoomForm({ roomId, userId }: CreateRoomFormProps) {
   const router = useRouter()
   const { toast } = useToast()
 
@@ -43,13 +45,13 @@ export default function CreateRoomForm({ roomId }: CreateRoomFormProps) {
   const form = useForm<CreatRoomForm>({
     resolver: zodResolver(createRoomSchema),
     defaultValues: {
-      username: '',
+      
     },
   })
 
-  function onSubmit({ username }: CreatRoomForm) {
+  function onSubmit() {
     setIsLoading(true)
-    socket.emit('create-room', { roomId, username })
+    socket.emit('create-room', { roomId, userId })
   }
 
   useEffect(() => {
@@ -80,19 +82,6 @@ export default function CreateRoomForm({ roomId }: CreateRoomFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-        <FormField
-          control={form.control}
-          name='username'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className='text-foreground'>Username</FormLabel>
-              <FormControl>
-                <Input placeholder='johndoe' {...field} />
-              </FormControl>
-              <FormMessage className='text-xs' />
-            </FormItem>
-          )}
-        />
 
         <div>
           <p className='mb-2 text-sm font-medium'>Room ID</p>
