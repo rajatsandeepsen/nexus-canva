@@ -41,16 +41,9 @@ export default function Home() {
       }
     })
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-
-    return () => subscription.unsubscribe()
   }, [])
 
-  if (!session) return <AuthenticationPage />
+  if (!user || !session) return <AuthenticationPage />
   const roomId = nanoid()
 
   const { name, email, user_name, id, avatar_url} = session.user.user_metadata
@@ -74,7 +67,7 @@ export default function Home() {
           <Input readOnly value={email} disabled />
 
 
-          <CreateRoomForm roomId={roomId} userId={id} />
+          <CreateRoomForm roomId={roomId} userId={user_name} />
           <div className='flex items-center space-x-2 '>
             <Separator />
             <span className='text-xs text-muted-foreground'>OR</span>

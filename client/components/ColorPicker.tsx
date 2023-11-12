@@ -19,9 +19,9 @@ export default function ColorPicker() {
 
       <Popover>
         <PopoverTrigger asChild className='mt-2 w-full'>
-          <Button className='h-8 w-full rounded-md p-0 ring-2 ring-border ring-offset-2 dark:focus-visible:ring-slate-700'>
+          <Button className='h-12 w-full rounded-md overflow-hidden p-0 ring-2 ring-border ring-offset-2 dark:focus-visible:ring-slate-700'>
             <div
-              className='h-full w-full rounded-[5px]'
+              className='h-full w-full'
               style={{ background: strokeColor }}
             />
           </Button>

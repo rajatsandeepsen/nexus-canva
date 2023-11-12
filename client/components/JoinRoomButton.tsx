@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { EventHandler, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,23 +18,20 @@ import {
 } from '@/components/ui/Dialog'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form'
 import { Input } from '@/components/ui/Input'
+import { useUserStore } from '@/stores/userStore'
 
 type JoinRoomForm = z.infer<typeof joinRoomSchema>
 
 export default function JoinRoomButtoon() {
   const [isLoading, setIsLoading] = useState(false)
+  const [roomId, setRoomId] = useState("")
+  const {user, setUser} = useUserStore()
 
-  const form = useForm<JoinRoomForm>({
-    resolver: zodResolver(joinRoomSchema),
-    defaultValues: {
-      username: '',
-      roomId: '',
-    },
-  })
 
-  function onSubmit({ roomId, username }: JoinRoomForm) {
+  function onSubmit(e:FormTarget) {
+    e.preventDefault()
     setIsLoading(true)
-    socket.emit('join-room', { roomId, username })
+    socket.emit('join-room', { roomId, username:user?.user_name || "" })
   }
 
   useEffect(() => {
@@ -55,40 +52,13 @@ export default function JoinRoomButtoon() {
         <DialogHeader className='pb-2'>
           <DialogTitle>Join a room now!</DialogTitle>
         </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-            <FormField
-              control={form.control}
-              name='username'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder='Username' {...field} />
-                  </FormControl>
-                  <FormMessage className='text-xs' />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='roomId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder='Room ID' {...field} />
-                  </FormControl>
-                  <FormMessage className='text-xs' />
-                </FormItem>
-              )}
-            />
-
+          <form onSubmit={onSubmit} className='flex flex-col gap-4'>
+                    <Input placeholder='Username' readOnly value={user?.user_name || ""} />
+                    <Input placeholder='Room ID' onChange={(e) => setRoomId(e.target.value)} value={roomId} />
             <Button type='submit' className='mt-2'>
               {isLoading ? <Loader2 className='h-4 w-4 animate-spin' /> : 'Join'}
             </Button>
           </form>
-        </Form>
       </DialogContent>
     </Dialog>
   )

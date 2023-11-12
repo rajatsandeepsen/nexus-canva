@@ -23,7 +23,7 @@ export default function SaveButton() {
   }
 
   return (
-    <Button variant='outline' size='sm' onClick={saveCanvas}>
+    <Button variant='outline' onClick={saveCanvas}>
       Save
     </Button>
   )

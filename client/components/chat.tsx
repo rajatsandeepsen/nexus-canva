@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, Plus, Send } from "lucide-react"
+import { Check, Plus, Send, ImagePlus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -39,6 +39,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip"
+import { ScrollArea } from "./ui/ScrollArea"
 
 const users = [
   {
@@ -99,7 +100,7 @@ export function CardsChat() {
 
   return (
     <>
-      <Card>
+      <Card className="h-full flex flex-col">
         <CardHeader className="flex flex-row items-center">
           <div className="flex items-center space-x-4">
             <Avatar>
@@ -129,12 +130,14 @@ export function CardsChat() {
           </TooltipProvider>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+        <ScrollArea className="will-change-scroll" style={{
+          height: "calc( 100vh - 250px )"
+        }}>
             {messages.map((message, index) => (
               <div
                 key={index}
                 className={cn(
-                  "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
+                  "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm mb-2",
                   message.role === "user"
                     ? "ml-auto bg-primary text-primary-foreground"
                     : "bg-muted"
@@ -143,9 +146,9 @@ export function CardsChat() {
                 {message.content}
               </div>
             ))}
-          </div>
+          </ScrollArea>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="mt-auto">
           <form
             onSubmit={(event) => {
               event.preventDefault()
@@ -169,6 +172,10 @@ export function CardsChat() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
             />
+            <Button type="button" size="icon">
+              <ImagePlus className="h-4 w-4" />
+              <span className="sr-only">Media</span>
+            </Button>
             <Button type="submit" size="icon" disabled={inputLength === 0}>
               <Send className="h-4 w-4" />
               <span className="sr-only">Send</span>

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
-import type { DrawOptions } from '@/types'
+import type { DrawOptions } from '@/types/index'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useUserStore } from '@/stores/userStore'
 import { socket } from '@/lib/socket'
@@ -12,6 +12,15 @@ import useDraw, { type DrawProps } from '@/hooks/useDraw'
 import { Skeleton } from '@/components/ui/Skeleton'
 import UndoButton from '@/components/UndoButton'
 import ClearButton from '@/components/ClearButton'
+import { PanelRightOpen, MicOff, PhoneOffIcon } from 'lucide-react'
+import { MessagesSquare } from 'lucide-react'
+
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/Sheet'
+import { Button } from '@/components/ui/Button'
+import ThemeMenuButton from '@/components/ThemeMenuButton'
+import RightPanel from '@/components/RightPanel'
+import Sidebar from '@/components/Sidebar'
+import Chat from '@/components/chat'
 
 export default function DrawingCanvas() {
   const router = useRouter()
@@ -26,11 +35,11 @@ export default function DrawingCanvas() {
   const dashGap = useCanvasStore(state => state.dashGap)
   const user = useUserStore(state => state.user)
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.replace('/')
-  //   }
-  // }, [router, user])
+  useEffect(() => {
+    if (!user) {
+      router.replace('/')
+    }
+  }, [router, user])
 
   const onDraw = useCallback(
     ({ ctx, currentPoint, prevPoint }: DrawProps) => {
@@ -118,31 +127,71 @@ export default function DrawingCanvas() {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className='relative flex h-full w-full items-center justify-center'
-    >
-      {!isCanvasLoading && (
-        <div className='absolute right-[25px] top-[25px] flex select-none rounded-none rounded-bl rounded-tr-[2.5px]'>
-          <UndoButton undo={undo} />
-
-          <ClearButton canvasRef={canvasRef} clear={clear} />
+    <>
+      <div
+        ref={containerRef}
+        className='relative flex h-screen w-full items-center justify-center'
+      >
+        <div className='absolute bottom-10 left-10 flex items-center justify-center gap-3 md:gap-4 '>
+          <Button
+            variant='destructive'
+            size='icon'
+            className='flex h-9 '
+            aria-label='Open right panel'
+          >
+            <MicOff size={20}/>
+          </Button>
         </div>
-      )}
 
-       {isCanvasLoading && (
-        <Skeleton className='absolute h-full w-full' />
-      )}
+        <div className='absolute right-10 top-10 flex items-center justify-center gap-3 md:gap-4 '>
+          <UndoButton undo={undo} />
+          <ThemeMenuButton />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant='outline'
+                size='icon'
+                className='flex h-9 '
+                aria-label='Open right panel'
+              >
+                <MessagesSquare size={20} />
+              </Button>
+            </SheetTrigger>
 
-      <canvas
-        id='canvas'
-        ref={canvasRef}
-        onMouseDown={handleInteractStart}
-        onTouchStart={handleInteractStart}
-        width={0}
-        height={0}
-        className='touch-none rounded border bg-white'
-      />
-    </div>
+            <SheetContent className=''>
+              <Chat />
+            </SheetContent>
+          </Sheet>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant='outline'
+                size='icon'
+                className='flex h-9 '
+                aria-label='Open right panel'
+              >
+                <PanelRightOpen size={20} />
+              </Button>
+            </SheetTrigger>
+
+            <SheetContent className='w-[21rem]'>
+              <Sidebar />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {isCanvasLoading && <Skeleton className='absolute w-full' />}
+
+        <canvas
+          id='canvas'
+          ref={canvasRef}
+          onMouseDown={handleInteractStart}
+          onTouchStart={handleInteractStart}
+          width={0}
+          height={0}
+          className='touch-none rounded border bg-white'
+        />
+      </div>
+    </>
   )
 }

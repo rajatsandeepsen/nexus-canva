@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 
-import type { RoomJoinedData } from '@/types'
+import type { RoomJoinedData } from '@/types/index'
 import { useUserStore } from '@/stores/userStore'
 import { useMembersStore } from '@/stores/membersStore'
 import { socket } from '@/lib/socket'
@@ -42,22 +40,17 @@ export default function CreateRoomForm({ roomId, userId }: CreateRoomFormProps) 
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<CreatRoomForm>({
-    resolver: zodResolver(createRoomSchema),
-    defaultValues: {
-      
-    },
-  })
-
-  function onSubmit() {
+  function onSubmit(e:FormTarget) {
+    e.preventDefault()
     setIsLoading(true)
-    socket.emit('create-room', { roomId, userId })
+    socket.emit('create-room', { roomId, username:userId })
   }
 
   useEffect(() => {
     socket.on('room-joined', ({ user, roomId, members }: RoomJoinedData) => {
-      setUser(user)
+      // setUser(user)
       setMembers(members)
+      console.log('room-joined', roomId)
       router.replace(`/${roomId}`)
     })
 
@@ -80,8 +73,7 @@ export default function CreateRoomForm({ roomId, userId }: CreateRoomFormProps) 
   }, [router, toast, setUser, setMembers])
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-4'>
+      <form onSubmit={onSubmit} className='flex flex-col gap-4'>
 
         <div>
           <p className='mb-2 text-sm font-medium'>Room ID</p>
@@ -96,6 +88,5 @@ export default function CreateRoomForm({ roomId, userId }: CreateRoomFormProps) 
           {isLoading ? <Loader2 className='h-4 w-4 animate-spin' /> : 'Create a Room'}
         </Button>
       </form>
-    </Form>
   )
 }

@@ -2,11 +2,20 @@
 
 import { useEffect } from 'react'
 
-import type { Notification } from '@/types'
+import type { Notification } from '@/types/index'
 import { useMembersStore } from '@/stores/membersStore'
 import { socket } from '@/lib/socket'
 import { useToast } from '@/components/ui/useToast'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/Card'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+
+export const findFallback = (name: string):string => {
+  let x = name.split(' ')
+  let y = ''
+  x.forEach((i)=> y += i[0])
+  return y
+}
 
 export default function MemberList() {
   const { toast } = useToast()
@@ -38,10 +47,19 @@ export default function MemberList() {
     <div className='my-6 select-none'>
       <h2 className='pb-2.5 font-medium'>Members</h2>
 
-      <ScrollArea className='h-48'>
-        <ul className='flex flex-col gap-1 rounded-md px-1'>
+      <ScrollArea className='h-96'>
+        <ul className='flex flex-col gap-1 rounded-md'>
           {members.map(({ id, username }) => (
-            <li key={id}>{username}</li>
+            <Card key={id} className='w-full flex gap-1 items-center justify-start px-3'>
+              <Avatar>
+                <AvatarImage src={`https://github.com/${username}.png`} />
+                <AvatarFallback>{findFallback(username)}</AvatarFallback>
+              </Avatar>
+            <CardHeader className='py-3'>
+              <CardDescription className='font-bold'>{username}</CardDescription>
+              <CardDescription>{username}</CardDescription>
+            </CardHeader>
+            </Card>
           ))}
         </ul>
       </ScrollArea>

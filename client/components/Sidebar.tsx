@@ -3,11 +3,15 @@ import StrokeWidthSlider from '@/components/StrokeWidthSlider'
 import DashGapSlider from '@/components/DashGapSlider'
 import MemberList from '@/components/MemberList'
 import LeaveButton from '@/components/LeaveButton'
+    import SaveButton from '@/components/SaveButton'
 
 export default function Sidebar() {
   return (
-    <aside className='hidden border-l px-6 py-8 lg:block'>
-      <div className='relative flex h-full w-[12.5rem] flex-col gap-6'>
+      <div className='relative flex h-full flex-col gap-6'>
+        <div className="flex gap-3">
+          <LeaveButton />
+          <SaveButton />
+        </div>
         <ColorPicker />
 
         <StrokeWidthSlider />
@@ -16,8 +20,6 @@ export default function Sidebar() {
 
         <MemberList />
 
-        <LeaveButton />
       </div>
-    </aside>
   )
 }

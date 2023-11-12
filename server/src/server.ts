@@ -15,7 +15,7 @@ export const joinRoomSchema = z.object({
     .string()
     .min(2, 'Username must contain at least 2 characters')
     .max(50, 'Username must not contain more than 50 characters'),
-  roomId: z.string().trim().length(21, 'Room ID must contain exactly 21 characters'),
+  roomId: z.string().trim().min(15, 'Room ID must contain exactly 15 characters'),
 })
 const app = express()
 
@@ -35,6 +35,7 @@ function validateJoinRoomData(socket: Socket, joinRoomData: JoinRoomData) {
     return joinRoomSchema.parse(joinRoomData)
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log(error)
       socket.emit('invalid-data', {
         message: 'The entities you provided are not correct and cannot be processed.',
       })
@@ -87,6 +88,9 @@ io.on('connection', socket => {
   })
 
   socket.on('join-room', (joinRoomData: JoinRoomData) => {
+
+    console.log('join-room', joinRoomData)
+
     const validatedData = validateJoinRoomData(socket, joinRoomData)
 
     if (!validatedData) return
